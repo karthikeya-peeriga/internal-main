@@ -4,8 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key'  # Change this to a strong random key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:your_password@localhost/ecombuddha_db'  # Use your database URI
+app.config['SECRET_KEY'] = '5728d338f8cb6520d906874ec71e318a'  # Change this to a strong random key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ecombuddha_user:Naveen_EcomBuddha_Karthi@localhost/ecombuddha_db'  # Use your database URI
 
 db = SQLAlchemy(app)
 
