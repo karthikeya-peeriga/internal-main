@@ -1,6 +1,6 @@
 from flask import Flask
 from extensions import db, login_manager
-from main_app.app import main_bp, User
+from main_app.app import main_bp
 from content_generator.app import content_bp
 from infographics_generator.app import infographic_bp
 

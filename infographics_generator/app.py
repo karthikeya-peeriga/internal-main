@@ -22,7 +22,7 @@ client = anthropic.Anthropic(
 @login_required
 def index():
     if request.method == 'POST':
-        # Helper function to safely get list or single value
+         # Helper function to safely get list or single value
         def safe_get_list(key, default=None):
             value = request.form.get(key, default)
             return value if isinstance(value, list) else [value] if value else default or []
@@ -71,7 +71,7 @@ def index():
             "key_attributes": key_attributes
             }
           message_content = f"""
-            Extract 6 Key selling points from the data below:
+            Extract exactly 6 key selling points from the data below. Each point MUST be 5-8 words maximum. Make sure that the bullet points are on their own separate lines.
             Brand: {brand_name}
             Category: {category}
             Sub Category: {sub_category}
@@ -94,14 +94,20 @@ def index():
                  "bullets": bullets
               }
           message_content = f"""
-             Extract 6 Key selling points from the data below:
-              Title: {title}
+             Extract exactly 6 key selling points from the data below. Each point MUST be 5-8 words maximum. Make sure that the bullet points are on their own separate lines.
+             Title: {title}
               Description: {description}
               Bullets: {bullets}
           """
         else:
             return "No correct input type was passed"
+        use_emoji = request.form.get('use_emoji')
+        if use_emoji:
+          message_content += f"""
+              Each line MUST contain a single emoji that indicates or is related to the concept that is being presented followed by a space, before the sentence
+              Example: 🔋 Ultra-fast charging in just 30 minutes
 
+          """
         try:
           message = client.messages.create(
               model="claude-3-5-sonnet-20241022",
@@ -109,9 +115,11 @@ def index():
               temperature=0,
               system=(
                   "You are an expert Amazon and Ecommerce product listing copy writer and content generator. "
-                  "You have expert knowledge on consumer behaviour and understand how the copy and content flow and storytelling "
-                  "affect Indian consumer behavior. Your objective is to ensure better shopping experiences by providing accurate, "
-                  "tailor-made details for each product type, increasing conversion rates, and boosting organic visibility using SEO."
+                  "Your objective is to ensure better shopping experiences by providing accurate, "
+                  "tailor-made details for each product type, increasing conversion rates, and boosting organic visibility using SEO. "
+                   "Your task is to identify and articulate the most compelling features in 5-8 words maximum. "
+                    "Each point should be direct, specific, and focused on a single clear benefit. "
+                  "Avoid unnecessary words and ensure each point is immediately understandable."
               ),
               messages=[
                   {
@@ -128,8 +136,8 @@ def index():
 
           for section in sections:
                 section = section.strip()
-                if section and len(key_features) < 6:
-                     key_features.append(section)
+                if section and len(section.split()) <=8 and len(key_features) < 6:
+                  key_features.append(section)
 
           if len(key_features) > 6:
              key_features = key_features[:6]
@@ -140,13 +148,12 @@ def index():
                 db.session.add(submission)
                 db.session.commit()
           return render_template('infographics_generator/results.html', user=current_user, key_features = key_features)
-
         except Exception as api_error:
-            return jsonify({
+              return jsonify({
                 "status": "error", 
                 "message": str(api_error)
-            }), 500
-        
+                }), 500
+            
     return render_template('infographics_generator/infographic_generator.html', user=current_user)
 
 @infographic_bp.route('/download_input_template')
@@ -202,25 +209,3 @@ def download_file(filename):
             "status": "error", 
             "message": str(e)
         }), 500
-    
-@infographic_bp.route('/history')
-@login_required
-def history():
-      return render_template('infographics_generator/history.html', user=current_user)
-
-
-@infographic_bp.route('/history/inputs')
-@login_required
-def history_inputs():
-   with current_app.app_context():
-       from main_app.app import InfographicSubmission, db
-       submissions = db.session.query(InfographicSubmission).filter_by(user_id=current_user.id).all()
-       return render_template('infographics_generator/history_inputs.html', submissions=submissions, user=current_user)
-
-@infographic_bp.route('/history/outputs')
-@login_required
-def history_outputs():
-    with current_app.app_context():
-        from main_app.app import InfographicSubmission, db
-        submissions = db.session.query(InfographicSubmission).filter_by(user_id=current_user.id).all()
-        return render_template('infographics_generator/history_outputs.html', submissions=submissions, user=current_user)

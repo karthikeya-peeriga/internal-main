@@ -103,10 +103,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/create_content/history">Content Gen History</a>
-                </li>
                  <li class="nav-item">
+                    <a class="nav-link" href="/create_content/history">Content Gen History</a>
+                 </li>
+                  <li class="nav-item">
                      <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
                 </li>
                 <li class="nav-item">
@@ -145,14 +145,14 @@
                 <div class="form-group">
                    <label class="form-label">Input Type</label>
                     <select class="form-control" name = "input_type" id = "input_type">
-                        <option value = "content_fields">Key Attributes</option>
-                        <option value = "specific_fields">Listing details (Title, Desc, Bullet points)</option>
+                        <option value = "content_fields">Same as Content Generator</option>
+                        <option value = "specific_fields">Title, description, bullets</option>
                    </select>
                </div>
                 <div class = "row">
                      <div class="col-12 mb-3">
                          <label class="form-label">Product Image</label>
-                        <input type = "file" class="form-control" required/>
+                        <input type = "file" class="form-control" name="product_image" required/>
                      </div>
                     <div id="content_generator_fields" style = "display:none">
                       <div class="col-md-6 mb-3">
