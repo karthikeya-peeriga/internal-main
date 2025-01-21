@@ -1,0 +1,25 @@
+[
+    {
+        "brand_name": "Example Brand",
+        "category": "Electronics",
+        "sub_category": "Smartphones",
+        "description": "Powerful Smartphone with Advanced Features",
+        "ean_number": 1234567890,
+        "model_number": "ModelXYZ",
+        "color": "Black",
+        "material": "Aluminum",
+        "size": "6.1 inch",
+        "keywords": [
+            "smartphone",
+            "mobile",
+            "tech"
+        ],
+        "key_attributes": [
+            "High-Resolution Camera",
+            "5G Enabled",
+            "Long Battery Life",
+            "Water Resistant",
+            "Wireless Charging"
+        ]
+    }
+]

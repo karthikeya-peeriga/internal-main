@@ -3,21 +3,19 @@ import json
 import csv
 from datetime import datetime
 from io import StringIO
-from flask import Blueprint, request, jsonify, render_template, send_file, Response
+from flask import Flask, request, jsonify, render_template, send_file, Response, Blueprint
 from flask_login import login_required, current_user
 import anthropic
 import pandas as pd
-from extensions import db
 
-content_bp = Blueprint('content_generator', __name__, template_folder='templates')
-
+content_bp = Blueprint('content_generator_bp', __name__, template_folder='templates')
 # Ensure the uploads directory exists
 UPLOAD_FOLDER = 'product_submissions'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Initialize Anthropic client
 client = anthropic.Anthropic(
-    api_key="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"
+    api_key="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"  # Use environment variable
 )
 
 @content_bp.route('/', methods=['GET'])
@@ -46,7 +44,7 @@ def download_input_template():
     # Write headers
     cw.writerow(headers)
     
-    # Optional: Add a sample row
+    # Optional: Add a sample row to guide users
     sample_row = [
         'Example Brand', 'Electronics', 'Smartphones', 
         'Powerful Smartphone with Advanced Features', 
@@ -58,6 +56,7 @@ def download_input_template():
     ]
     cw.writerow(sample_row)
     
+    # Prepare the response
     return Response(
         si.getvalue(),
         mimetype='text/csv',
@@ -78,7 +77,6 @@ def download_file(filename):
             "message": str(e)
         }), 500
 
-# Keep the rest of your routes the same as in your original content_generator/app.py...
 @content_bp.route('/download_claude_csv')
 @login_required
 def download_claude_csv():
@@ -266,32 +264,32 @@ def submit_products(form_data=None):
 
             # Prepare Claude API call content
             message_content = f''' 
-        Create an Amazon Detailed Page content for the product below, using the following structured format:
+            Create an Amazon Detailed Page content for the product below, using the following structured format:
 
-        |||Title: [Detailed SEO-Optimized Product Title Goes Here]|||
-        |||Description: [Comprehensive Product Description]|||
-        |||Bullets: [Bullet1 =|= Bullet2 =|= Bullet3 =|= Bullet4 =|= Bullet5]|||
+            |||Title: [Detailed SEO-Optimized Product Title Goes Here]|||
+            |||Description: [Comprehensive Product Description]|||
+            |||Bullets: [Bullet1 =|= Bullet2 =|= Bullet3 =|= Bullet4 =|= Bullet5]|||
 
-        Product Details:
-        Product Name: {descriptions[i]}
-        Brand: {brand_names[i]}
-        Category: {categories[i]}
-        Sub-Category: {sub_categories[i]}
-        Model Number: {model_numbers[i]}
-        Color: {colors[i]}
-        Material: {materials[i]}
-        Size: {sizes[i]}
-        Key Features:
-        1. {key_attributes[0] if len(key_attributes) > 0 else 'No details'}
-        2. {key_attributes[1] if len(key_attributes) > 1 else 'No details'}
-        3. {key_attributes[2] if len(key_attributes) > 2 else 'No details'}
-        4. {key_attributes[3] if len(key_attributes) > 3 else 'No details'}
-        5. {key_attributes[4] if len(key_attributes) > 4 else 'No details'}
+            Product Details:
+            Product Name: {descriptions[i]}
+            Brand: {brand_names[i]}
+            Category: {categories[i]}
+            Sub-Category: {sub_categories[i]}
+            Model Number: {model_numbers[i]}
+            Color: {colors[i]}
+            Material: {materials[i]}
+            Size: {sizes[i]}
+            Key Features:
+            1. {key_attributes[0] if len(key_attributes) > 0 else 'No details'}
+            2. {key_attributes[1] if len(key_attributes) > 1 else 'No details'}
+            3. {key_attributes[2] if len(key_attributes) > 2 else 'No details'}
+            4. {key_attributes[3] if len(key_attributes) > 3 else 'No details'}
+            5. {key_attributes[4] if len(key_attributes) > 4 else 'No details'}
 
-        Keywords: {keywords[i]}
+            Keywords: {keywords[i]}
 
-        Create a compelling, SEO-optimized product listing that highlights unique features and benefits.
-        '''
+            Create a compelling, SEO-optimized product listing that highlights unique features and benefits.
+            '''
 
             # Make Claude API call
             try:
@@ -312,10 +310,10 @@ def submit_products(form_data=None):
                         }
                     ]
                 )
-
+                
                 # Parse the response
                 response_text = str(message.content[0].text)
-
+                
                 # Extract sections
                 sections = response_text.split("|||")
                 parsed_response = {
@@ -323,7 +321,7 @@ def submit_products(form_data=None):
                     "description": "",
                     "bullets": []
                 }
-
+                
                 for section in sections:
                     if section.startswith("Title:"):
                         parsed_response["title"] = section.replace("Title:", "").strip()
@@ -334,12 +332,12 @@ def submit_products(form_data=None):
                             bullet.strip() for bullet in 
                             section.replace("Bullets:", "").strip().split("=|=")
                         ]
-
+                
                 claude_responses.append({
                     "product": product,
                     "claude_output": parsed_response
                 })
-
+            
             except Exception as api_error:
                 claude_responses.append({
                     "product": product,
@@ -363,10 +361,10 @@ def submit_products(form_data=None):
 
         # Render results page with Claude API responses and filenames
         return render_template('content_generator/results.html', 
-                               responses=claude_responses, 
-                               products_filename=products_filename,
-                               responses_filename=responses_filename, 
-                               user=current_user)
+                           responses=claude_responses, 
+                           products_filename=products_filename,
+                           responses_filename=responses_filename, 
+                           user=current_user)
 
     except Exception as e:
         return jsonify({

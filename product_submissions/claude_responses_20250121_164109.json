@@ -1,0 +1,38 @@
+[
+    {
+        "product": {
+            "brand_name": "Example Brand",
+            "category": "Electronics",
+            "sub_category": "Smartphones",
+            "description": "Powerful Smartphone with Advanced Features",
+            "ean_number": 1234567890,
+            "model_number": "ModelXYZ",
+            "color": "Black",
+            "material": "Aluminum",
+            "size": "6.1 inch",
+            "keywords": [
+                "smartphone",
+                "mobile",
+                "tech"
+            ],
+            "key_attributes": [
+                "High-Resolution Camera",
+                "5G Enabled",
+                "Long Battery Life",
+                "Water Resistant",
+                "Wireless Charging"
+            ]
+        },
+        "claude_output": {
+            "title": "Example Brand ModelXYZ 6.1-inch 5G Smartphone with High-Resolution Camera, Long Battery Life, Water Resistant & Wireless Charging - Premium Aluminum Body, Black",
+            "description": "Transform your digital lifestyle with the Example Brand ModelXYZ, a masterpiece of modern smartphone engineering. This premium device combines cutting-edge technology with elegant design, featuring a sleek aluminum body in sophisticated black. The stunning 6.1-inch display delivers vivid colors and sharp details, making every interaction a visual treat. Experience lightning-fast connectivity with 5G capabilities, ensuring smooth streaming, gaming, and browsing.\n\nCapture life's precious moments in extraordinary detail with the high-resolution camera system, enhanced by advanced AI photography features. The long-lasting battery ensures you stay connected throughout your day, while convenient wireless charging eliminates cable clutter. Built to last, this water-resistant smartphone gives you peace of mind in any weather condition.\n\nPerfect for professionals, photography enthusiasts, and tech-savvy users who demand excellence in their mobile device. The ModelXYZ represents the perfect balance of performance, style, and innovation.",
+            "bullets": [
+                "\ud83d\udd25 ADVANCED CAMERA SYSTEM: Professional-grade high-resolution camera with AI enhancement, perfect for capturing stunning photos and videos in any lighting condition",
+                "\u26a1 LIGHTNING-FAST 5G CONNECTIVITY: Experience ultra-fast download speeds, seamless streaming, and lag-free gaming with next-generation 5G technology",
+                "\ud83d\udd0b EXCEPTIONAL BATTERY LIFE: Extended battery performance keeps you powered throughout your day, complemented by convenient wireless charging capability",
+                "\ud83d\udcaa PREMIUM DURABILITY: Crafted from high-grade aluminum with water-resistant protection, designed to withstand daily wear and tear",
+                "\ud83d\udcf1 IMMERSIVE DISPLAY: Vibrant 6.1-inch screen with edge-to-edge display delivers stunning visuals and smooth touch response for an enhanced user experience"
+            ]
+        }
+    }
+]

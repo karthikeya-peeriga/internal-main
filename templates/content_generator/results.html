@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Product Submission Results</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ <style>
+     :root {
+         --beige-lightest: #F5F0E1;
+         --beige-light: #E6D4B8;
+         --beige-medium: #D4B483;
+         --black-dark: #121212;
+         --black-medium: #1E1E1E;
+         --black-light: #2C2C2C;
+     }
+     body {
+         background: linear-gradient(to right, #f2f2f2, #e0e0e0);
+         font-family: 'Arial', sans-serif;
+          padding-top: 70px;
+          color: #333;
+     }
+     .result-container {
+           background-color: #ffffff;
+         border-radius: 12px;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          padding: 30px;
+         margin-top: 30px;
+         color: #2c3e50;
+
+     }
+     .result-card {
+         border-radius: 12px;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+          background-color: #ffffff;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+       }
+
+       .result-card:hover {
+         transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.20);
+       }
+     .card-header {
+         background-color: #2c3e50;
+         color: white;
+        padding: 20px;
+         font-weight: bold;
+         border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+     }
+     .card-body {
+         background-color: white;
+          padding: 20px;
+     }
+     h1, h4, h5 {
+          color: #2c3e50;
+          font-weight: bold;
+       }
+      .alert-danger {
+          background-color: #f8d7da;
+          color: #721c24;
+        border: 1px solid #f5c6cb;
+     }
+    .btn-secondary,
+    .btn-primary {
+         background-color: #2c3e50;
+         color: white;
+         border: none;
+          margin-right: 10px;
+           padding: 12px 20px;
+           font-weight: 600;
+         border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+     }
+     .btn-secondary:hover,
+    .btn-primary:hover {
+        background-color: #1a2530;
+        border-color: #1a2530;
+     }
+      .navbar {
+           background-color: #2c3e50 !important;
+       }
+       .navbar-brand {
+         color: #ffffff;
+         font-weight: bold;
+         font-size: 1.5rem;
+     }
+        .navbar-text {
+         color: #ffffff;
+        }
+         .navbar-nav .nav-link{
+              color: #ffffff;
+         }
+         .navbar-nav .nav-link:hover{
+            color: #e0e0e0;
+         }
+ </style>
+</head>
+<body>
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+     <a class="navbar-brand" href="/">EcomBuddha Internal Tool</a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+     </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <span class="navbar-text">
+                              Welcome, {{ user.username }}
+                   </span>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
+              </li>
+         </ul>
+     </div>
+ </nav>
+ <div class="container result-container">
+     <h1 class="mb-4 text-center">Product Submission Results</h1>
+     
+     {% for response in responses %}
+     <div class="result-card card p-3">
+         <div class="card-header">
+             <h4>{{ response.product.brand_name }} - {{ response.product.description }}</h4>
+         </div>
+         <div class="card-body">
+             {% if 'error' in response.claude_output %}
+                 <div class="alert alert-danger">
+                     <strong>API Error:</strong> {{ response.claude_output.error }}
+                 </div>
+             {% else %}
+                 <div class="mb-3">
+                     <h5>Title</h5>
+                     <p>{{ response.claude_output.title }}</p>
+                 </div>
+                 <div class="mb-3">
+                     <h5>Description</h5>
+                     <p>{{ response.claude_output.description }}</p>
+                 </div>
+                 <div class="mb-3">
+                     <h5>Bullet Points</h5>
+                     <ul>
+                         {% for bullet in response.claude_output.bullets %}
+                         <li>{{ bullet }}</li>
+                         {% endfor %}
+                     </ul>
+                 </div>
+             {% endif %}
+         </div>
+     </div>
+     {% endfor %}
+     
+     <div class="text-center mt-4">
+         <a href="{{ url_for('content_generator_bp.index') }}" class="btn btn-secondary">Submit More Products</a>
+         <a href="{{ url_for('content_generator_bp.download_file', filename=products_filename) }}" class="btn btn-secondary">Download Product Data</a>
+         <a href="{{ url_for('content_generator_bp.download_file', filename=responses_filename) }}" class="btn btn-secondary">Download Claude Responses</a>
+          <a href="{{ url_for('content_generator_bp.download_claude_csv', filename=responses_filename) }}" class="btn btn-primary">Download CSV</a>
+     </div>
+     
+ </div>
+</body>
+</html>
