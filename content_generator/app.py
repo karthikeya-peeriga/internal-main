@@ -16,7 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Initialize Anthropic client
 client = anthropic.Anthropic(
-    api_key="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"  # Use environment variable
+    api_key="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"  # Use environment variable
 )
 
 @content_bp.route('/', methods=['GET'])

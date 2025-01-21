@@ -1,0 +1,28 @@
+[
+    {
+        "product": {
+            "brand_name": "Arthaa",
+            "category": "Office Notebooks",
+            "sub_category": "Unruled Notebook",
+            "description": "Arthaa A5 Laser engraved designer MDF cover with 100 unruled 90GSM Bond Pages, spiral bound",
+            "ean_number": "NA",
+            "model_number": "MDF-BK-DIW-A5-1",
+            "color": "Black",
+            "material": "MDF",
+            "size": "A5",
+            "keywords": [
+                "Spiral Notebook Unruled Notebook Wood Cover MDF Cover Notebook for office Notebook for Journal Office Notebook"
+            ],
+            "key_attributes": [
+                "Laser Engraved MDF Cover - Designer",
+                "100 Pages of Unruled 90 GSM Bond Paper",
+                "Fully openable for ease of writing",
+                "High quality materials and durable",
+                "Limited Designer Editions"
+            ]
+        },
+        "claude_output": {
+            "error": "Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}"
+        }
+    }
+]
