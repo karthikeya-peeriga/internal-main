@@ -1,7 +1,8 @@
 from flask import Flask
 from extensions import db, login_manager
-from main_app.app import main_bp
+from main_app.app import main_bp, User
 from content_generator.app import content_bp
+from infographics_generator.app import infographic_bp
 
 def create_app():
     app = Flask(__name__)
@@ -15,6 +16,8 @@ def create_app():
     # Register blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(content_bp, url_prefix='/create_content')
+    app.register_blueprint(infographic_bp, url_prefix='/create_infographics')
+
 
     return app
 

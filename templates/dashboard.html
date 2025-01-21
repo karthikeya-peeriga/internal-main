@@ -26,7 +26,7 @@
              margin-bottom: 15px;
          }
          .jumbotron p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
            color: #555;
            line-height: 1.6;
          }
@@ -73,8 +73,8 @@
             border-color: #2c3e50;
              padding: 12px 20px;
             font-weight: bold;
-            border-radius: 6px;
-              box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+             border-radius: 6px;
+               box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
             transition: background-color 0.3s ease;
        }
         .btn-primary:hover {
@@ -100,12 +100,15 @@
                 <li class="nav-item">
                    <a class="nav-link" href="/create_content/history">Content Gen History</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create_infographics/history">Infographics Gen History</a>
+                </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{{ url_for('main_app.previous_listings') }}">Previous Listings</a>
+                      <a class="nav-link" href="{{ url_for('main_app.previous_listings') }}">Previous Listings</a>
                  </li>
                  <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('main_app.change_password') }}">Change Password</a>
-                </li>
+                 </li>
                  <li class="nav-item">
                      <span class="navbar-text">
                                  Welcome, {{ user.username }}
@@ -139,7 +142,7 @@
                    <div class="card-body">
                          <h5 class="card-title">Create Infographics for a Listing</h5>
                          <p class="card-text">Generate infographics based on your Listing Content.</p>
-                         <a href="/create_infographics" class="btn btn-primary btn-block">Go to Infographics Creation</a>
+                         <a href="{{ url_for('infographics_generator.index') }}" class="btn btn-primary btn-block">Go to Infographics Creation</a>
                     </div>
                 </div>
             </div>
@@ -148,7 +151,7 @@
                    <div class="card-body">
                          <h5 class="card-title">Create Full Listing</h5>
                          <p class="card-text">Generate the content and the infographics together.</p>
-                         <a href="/create_all" class="btn btn-primary btn-block">Go to Combined Creation</a>
+                         <a href="#" class="btn btn-primary btn-block">Go to Combined Creation</a>
                     </div>
                 </div>
             </div>
