@@ -15,7 +15,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Initialize Anthropic client
 client = anthropic.Anthropic(
-    api_key="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"  # Use environment variable
+    api_key="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"  # Use environment variable
 )
 
 @infographic_bp.route('/', methods=['GET', 'POST'])
