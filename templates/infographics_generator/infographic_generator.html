@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infographic Generator</title>
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-       <style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
         :root {
             --beige-lightest: #F5F0E1;
             --beige-light: #E6D4B8;
@@ -17,7 +17,7 @@
         body {
             background: linear-gradient(to right, #f2f2f2, #e0e0e0);
             font-family: 'Arial', sans-serif;
-             padding-top: 70px;
+            padding-top: 70px;
             color: var(--black-dark);
         }
         .form-container {
@@ -26,93 +26,91 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             padding: 30px;
             margin-top: 30px;
-           border: 2px solid var(--black-medium);
+            border: 2px solid var(--black-medium);
             color: #2c3e50;
         }
-         .navbar {
-              background-color: #2c3e50 !important;
-          }
-          .navbar-brand {
+        .navbar {
+            background-color: #2c3e50 !important;
+        }
+        .navbar-brand {
             color: #ffffff;
             font-weight: bold;
             font-size: 1.5rem;
         }
-           .navbar-text {
+        .navbar-text {
             color: #ffffff;
-           }
-            .navbar-nav .nav-link{
-                 color: #ffffff;
-            }
-           .navbar-nav .nav-link:hover{
-                color: #e0e0e0;
-            }
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #e0e0e0;
+        }
         .product-section {
-             background-color: #ffffff;
+            background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-           transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
         }
-         .product-section:hover {
-             transform: translateY(-5px);
-             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.20);
-         }
-         .btn-primary {
+        .product-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.20);
+        }
+        .btn-primary {
             background-color: #2c3e50;
             border-color: #2c3e50;
             padding: 12px 20px;
-             font-weight: 600;
+            font-weight: 600;
             border-radius: 6px;
-               box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
             transition: background-color 0.3s ease;
-
         }
         .btn-primary:hover {
-             background-color: #1a2530;
-           border-color: #1a2530;
+            background-color: #1a2530;
+            border-color: #1a2530;
         }
         h1, h4, h5 {
             color: #2c3e50;
             font-weight: bold;
         }
         .form-label {
-             font-weight: bold;
+            font-weight: bold;
             color: #333;
-       }
-         .form-control {
-             background-color: #ffffff;
-            border: 1px solid #bdc3c7;
-             border-radius: 4px;
-             padding: 10px;
-             color: #333;
-
         }
-          .form-control:focus {
-             border-color: #2c3e50;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-       }
-       .form-group {
-         margin-bottom: 18px;
-         }
+        .form-control {
+            background-color: #ffffff;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            padding: 10px;
+            color: #333;
+        }
+        .form-control:focus {
+            border-color: #2c3e50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
     </style>
 </head>
 <body>
-     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
         <a class="navbar-brand" href="/">EcomBuddha Internal Tool</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="/create_content/history">Content Gen History</a>
-                 </li>
-                  <li class="nav-item">
-                     <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
                 </li>
                 <li class="nav-item">
-                     <span class="navbar-text">
-                                 Welcome, {{ user.username }}
-                     </span>
+                    <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <span class="navbar-text">
+                        Welcome, {{ user.username }}
+                    </span>
                 </li>
             </ul>
         </div>
@@ -141,124 +139,132 @@
     <div class="container">
         <div class="form-container">
             <h1 class="mb-4 text-center">Infographic Generator</h1>
-             <form action="" method="POST" id="productForm">
+            <form action="" method="POST" id="productForm" enctype="multipart/form-data">
                 <div class="form-group">
-                   <label class="form-label">Input Type</label>
-                    <select class="form-control" name = "input_type" id = "input_type">
-                        <option value = "content_fields">Same as Content Generator</option>
-                        <option value = "specific_fields">Title, description, bullets</option>
-                   </select>
-               </div>
-                <div class = "row">
-                     <div class="col-12 mb-3">
-                         <label class="form-label">Product Image</label>
-                        <input type = "file" class="form-control" name="product_image" required/>
-                     </div>
-                    <div id="content_generator_fields" style = "display:none">
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label">Brand Name</label>
-                          <input type="text" class="form-control" name="brand_name" >
+                    <label class="form-label">Input Type</label>
+                    <select class="form-control" name="input_type" id="input_type">
+                        <option value="content_fields">Same as Content Generator</option>
+                        <option value="specific_fields">Title, description, bullets</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Product Image</label>
+                        <input type="file" class="form-control" name="product_image" required/>
+                    </div>
+                    <div id="content_generator_fields" style="display:none">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Brand Name</label>
+                            <input type="text" class="form-control" name="brand_name">
                         </div>
-                       <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Category</label>
                             <input type="text" class="form-control" name="category">
                         </div>
-                          <div class="col-md-6 mb-3">
-                              <label class="form-label">Sub Category</label>
-                              <input type="text" class="form-control" name="sub_category">
-                          </div>
                         <div class="col-md-6 mb-3">
-                             <label class="form-label">Brief Product Description</label>
-                             <input type="text" class="form-control" name="brief_product_description">
+                            <label class="form-label">Sub Category</label>
+                            <input type="text" class="form-control" name="sub_category">
                         </div>
                         <div class="col-md-6 mb-3">
-                                <label class="form-label">EAN Number</label>
-                                <input type="text" class="form-control" name="ean_number">
-                            </div>
-                           <div class="col-md-6 mb-3">
-                                <label class="form-label">Model Number</label>
-                                <input type="text" class="form-control" name="model_number">
-                            </div>
-                           <div class="col-md-6 mb-3">
-                                <label class="form-label">Color</label>
-                                <input type="text" class="form-control" name="color">
-                            </div>
-                           <div class="col-md-6 mb-3">
-                                <label class="form-label">Material</label>
-                                <input type="text" class="form-control" name="material">
-                            </div>
-                           <div class="col-md-6 mb-3">
-                                <label class="form-label">Size</label>
-                                <input type="text" class="form-control" name="size">
-                           </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Keywords (comma-separated)</label>
-                                <input type="text" class="form-control" name="keywords">
-                            </div>
-                             <div class="col-12 mb-3">
-                                <h5 class="text-secondary">Key Attributes</h5>
-                                <div class="row">
-                                    <div class="col-md-4 mb-2">
-                                        <input type="text" class="form-control" name="key_attribute_1" placeholder="Key Attribute 1">
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <input type="text" class="form-control" name="key_attribute_2" placeholder="Key Attribute 2">
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <input type="text" class="form-control" name="key_attribute_3" placeholder="Key Attribute 3">
-                                    </div>
-                                     <div class="col-md-4 mb-2">
-                                        <input type="text" class="form-control" name="key_attribute_4" placeholder="Key Attribute 4">
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <input type="text" class="form-control" name="key_attribute_5" placeholder="Key Attribute 5">
-                                   </div>
+                            <label class="form-label">Brief Product Description</label>
+                            <input type="text" class="form-control" name="brief_product_description">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">EAN Number</label>
+                            <input type="text" class="form-control" name="ean_number">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Model Number</label>
+                            <input type="text" class="form-control" name="model_number">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Color</label>
+                            <input type="text" class="form-control" name="color">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Material</label>
+                            <input type="text" class="form-control" name="material">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Size</label>
+                            <input type="text" class="form-control" name="size">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Keywords (comma-separated)</label>
+                            <input type="text" class="form-control" name="keywords">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <h5 class="text-secondary">Key Attributes</h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" class="form-control" name="key_attribute_1" placeholder="Key Attribute 1">
                                 </div>
-                             </div>
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" class="form-control" name="key_attribute_2" placeholder="Key Attribute 2">
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" class="form-control" name="key_attribute_3" placeholder="Key Attribute 3">
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" class="form-control" name="key_attribute_4" placeholder="Key Attribute 4">
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" class="form-control" name="key_attribute_5" placeholder="Key Attribute 5">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                   <div id="specific_fields" style = "display:none">
-                     <div class="col-12 mb-3">
-                       <label class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title">
-                     </div>
-                     <div class="col-12 mb-3">
-                       <label class="form-label">Description</label>
-                      <input type = "text" class="form-control" name="description"/>
-                     </div>
-                     <div class = "col-12 mb-3">
-                          <label for="keyFeatures" class="form-label">Bullet Points</label>
-                        <input type="text" class="form-control" name="bullets"/>
-                     </div>
-                   </div>
-                  </div>
+                    <div id="specific_fields" style="display:none">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" name="description"/>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="keyFeatures" class="form-label">Bullet Points</label>
+                            <input type="text" class="form-control" name="bullets"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New emoji checkbox -->
+                <div class="form-group text-center mb-4">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="useEmoji" name="use_emoji">
+                        <label class="custom-control-label" for="useEmoji">Use emoji for icons</label>
+                    </div>
+                </div>
+
                 <div class="text-center">
-                   <button type="submit" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary">Generate</button>
                 </div>
             </form>
-       </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-         const inputTypeSelect = document.getElementById('input_type');
-         const contentFields = document.getElementById('content_generator_fields');
-         const specificFields = document.getElementById('specific_fields');
+        const inputTypeSelect = document.getElementById('input_type');
+        const contentFields = document.getElementById('content_generator_fields');
+        const specificFields = document.getElementById('specific_fields');
 
+        function toggleFields() {
+            if (inputTypeSelect.value === 'content_fields') {
+                contentFields.style.display = 'block';
+                specificFields.style.display = 'none';
+            } else {
+                contentFields.style.display = 'none';
+                specificFields.style.display = 'block';
+            }
+        }
 
-          function toggleFields(){
-               if (inputTypeSelect.value === 'content_fields'){
-                  contentFields.style.display = 'block';
-                  specificFields.style.display = 'none';
-               } else {
-                  contentFields.style.display = 'none';
-                  specificFields.style.display = 'block';
-               }
-          }
-
-         inputTypeSelect.addEventListener('change', function() {
-              toggleFields();
-         });
+        inputTypeSelect.addEventListener('change', function() {
+            toggleFields();
+        });
 
         toggleFields();
     </script>
