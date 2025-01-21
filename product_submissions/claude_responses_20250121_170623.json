@@ -1,0 +1,36 @@
+[
+    {
+        "product": {
+            "brand_name": "Arthaa",
+            "category": "Office Notebooks",
+            "sub_category": "Unruled Notebook",
+            "description": "Arthaa A5 Laser engraved designer MDF cover with 100 unruled 90GSM Bond Pages, spiral bound",
+            "ean_number": "NA",
+            "model_number": "MDF-BK-DIW-A5-1",
+            "color": "Black",
+            "material": "MDF",
+            "size": "A5",
+            "keywords": [
+                "Spiral Notebook Unruled Notebook Wood Cover MDF Cover Notebook for office Notebook for Journal Office Notebook"
+            ],
+            "key_attributes": [
+                "Laser Engraved MDF Cover - Designer",
+                "100 Pages of Unruled 90 GSM Bond Paper",
+                "Fully openable for ease of writing",
+                "High quality materials and durable",
+                "Limited Designer Editions"
+            ]
+        },
+        "claude_output": {
+            "title": "Arthaa A5 Designer Notebook with Laser Engraved MDF Cover, 100 Pages Unruled 90GSM Bond Paper, Spiral Bound Premium Journal for Office & Personal Use (Black)",
+            "description": "Elevate your writing experience with the Arthaa A5 Designer Notebook, a perfect blend of aesthetics and functionality. This premium notebook features a stunning laser-engraved MDF (Medium Density Fiberboard) cover that showcases intricate designer patterns, making each piece uniquely beautiful. The black MDF cover not only provides durability but also adds a touch of sophistication to your desk.\n\nCrafted with 100 pages of high-quality 90 GSM unruled bond paper, this notebook offers smooth writing surfaces perfect for sketching, journaling, or taking notes. The spiral binding allows for 180-degree flat opening, making writing comfortable and convenient. Whether you're a professional, student, or creative enthusiast, this limited edition designer notebook serves as both a practical writing tool and a statement piece.\n\nThe A5 size (148 x 210 mm) strikes the perfect balance between portability and writing space, making it ideal for both office use and personal journaling. Each notebook is part of our exclusive limited designer editions, ensuring you own a distinctive piece that stands out.",
+            "bullets": [
+                "Premium Laser Engraved MDF Cover: Featuring unique designer patterns crafted with precision laser technology, each notebook cover is a work of art that combines durability with sophisticated aesthetics",
+                "High-Quality Paper: 100 pages of premium 90 GSM unruled bond paper providing smooth, bleed-resistant writing surface perfect for all writing instruments",
+                "180\u00b0 Lay-Flat Design: Spiral binding allows the notebook to open completely flat, ensuring comfortable writing experience from start to finish",
+                "Versatile A5 Size: Ideal 148 x 210 mm size perfect for portability while providing ample writing space for notes, sketches, and journaling",
+                "Limited Designer Edition: Each notebook is part of an exclusive collection, making it a unique possession that combines style with functionality for office and personal use"
+            ]
+        }
+    }
+]

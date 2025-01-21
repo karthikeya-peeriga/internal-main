@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcomBuddha Internal Tool - Output History</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+       <style>
+         body {
+               padding-top: 70px;
+              background: linear-gradient(to right, #f2f2f2, #e0e0e0);
+              font-family: 'Arial', sans-serif;
+             color: #333;
+         }
+        .jumbotron {
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 30px;
+             border-radius: 8px;
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+             color: #2c3e50;
+         }
+         .jumbotron h1 {
+            font-size: 2.5rem;
+             margin-bottom: 15px;
+          }
+         .jumbotron p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+         .navbar {
+             background-color: #2c3e50 !important;
+         }
+           .navbar-text {
+            color: #ffffff;
+           }
+         .navbar-brand {
+             color: #ffffff;
+            font-weight: bold;
+            font-size: 1.5rem;
+          }
+        .table {
+            background-color: #ffffff;
+        }
+         .nav-link {
+            color: #fff;
+         }
+         .nav-link:hover {
+            color: #bdc3c7;
+         }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand" href="/">EcomBuddha Internal Tool</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('content_generator_bp.history') }}">History</a>
+                </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
+                </li>
+                 <li class="nav-item">
+                     <span class="navbar-text">
+                        Welcome, {{ user.username }}
+                     </span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+     <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Content Generation Output History</h1>
+            <p class="lead">A history of the content that has been generated using the tool.</p>
+        </div>
+         <div class = "mt-4">
+            {% if submissions %}
+              <table class="table">
+                 <thead>
+                     <tr>
+                         <th>Time Generated</th>
+                         <th>Brand Name</th>
+                         <th>Title</th>
+                         <th>Description</th>
+                       <th>Bullets</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     {% for submission in submissions %}
+                       <tr>
+                          <td>{{ submission.timestamp }}</td>
+                           <td>
+                              {{ submission.product_data[0].brand_name }}
+                            </td>
+                            <td>
+                              {{ submission.claude_response[0].claude_output.title }}
+                            </td>
+                             <td>
+                              {{ submission.claude_response[0].claude_output.description }}
+                            </td>
+                             <td>
+                             <ul>
+                                  {% for bullet in submission.claude_response[0].claude_output.bullets %}
+                                    <li>{{ bullet }}</li>
+                                   {% endfor %}
+                              </ul>
+                             </td>
+                       </tr>
+                     {% endfor %}
+                 </tbody>
+              </table>
+           {% else %}
+                <p>No content has been generated yet</p>
+              {% endif %}
+        </div>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

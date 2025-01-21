@@ -58,7 +58,7 @@
             border: 1px solid #bdc3c7;
             border-radius: 4px;
             padding: 10px;
-             color: #333;
+              color: #333;
         }
         .form-control:focus {
           border-color: #2c3e50;
@@ -80,7 +80,7 @@
            font-weight: 600;
              border-radius: 4px;
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-           transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease;
         }
        .btn-bulk-listings:hover {
          background-color: #1a2530;
@@ -93,12 +93,12 @@
              font-weight: 600;
             border-radius: 6px;
               box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-           transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease;
        }
-       .btn-primary:hover {
-          background-color: #1a2530;
+         .btn-primary:hover {
+              background-color: #1a2530;
           border-color: #1a2530;
-       }
+        }
           .navbar {
               background-color: #2c3e50 !important;
           }
@@ -127,12 +127,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('content_generator_bp.history') }}">Content Gen History</a>
+                </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
+                </li>
+                <li class="nav-item">
                     <span class="navbar-text">
                                  Welcome, {{ user.username }}
                     </span>
-                </li>
-                <li class="nav-item">
-                     <a class="nav-link" href="{{ url_for('main_app.logout') }}">Logout</a>
                 </li>
             </ul>
         </div>
@@ -145,7 +148,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="bulkUploadForm" action="/create_content/bulk_upload" method="POST" enctype="multipart/form-data">
+                    <form id="bulkUploadForm" action="{{ url_for('content_generator_bp.bulk_upload') }}" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="csvFile" class="form-label">Upload CSV File</label>
                             <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv" required>
@@ -232,8 +235,7 @@
                      <button type="button" class="btn btn-add-product" onclick="addProduct()">Add Another Product</button>
                     <button type="button" class="btn btn-bulk-listings" data-bs-toggle="modal" data-bs-target="#bulkUploadModal">Bulk Listings</button>
                    <button type="submit" class="btn btn-primary ms-2">Submit Products</button>
-                   <button type="button" class="btn btn-primary ms-2" onclick="window.location.href='{{ url_for('content_generator_bp.download_input_template') }}'">Download Input Template</button>
-
+                    <button type="button" class="btn btn-primary ms-2" onclick="window.location.href='{{ url_for('content_generator_bp.download_input_template') }}'">Download Input Template</button>
                 </div>
             </form>
         </div>

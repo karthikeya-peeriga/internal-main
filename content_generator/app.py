@@ -3,10 +3,11 @@ import json
 import csv
 from datetime import datetime
 from io import StringIO
-from flask import Flask, request, jsonify, render_template, send_file, Response, Blueprint
+from flask import Flask, request, jsonify, render_template, send_file, Response, Blueprint, current_app
 from flask_login import login_required, current_user
 import anthropic
 import pandas as pd
+from extensions import db
 
 content_bp = Blueprint('content_generator_bp', __name__, template_folder='templates')
 # Ensure the uploads directory exists
@@ -21,7 +22,7 @@ client = anthropic.Anthropic(
 @content_bp.route('/', methods=['GET'])
 @login_required
 def index():
-    return render_template('content_generator/index.html', user=current_user)
+    return render_template('content_generator/index.html',user=current_user)
 
 @content_bp.route('/download_input_template')
 @login_required
@@ -264,33 +265,33 @@ def submit_products(form_data=None):
 
             # Prepare Claude API call content
             message_content = f''' 
-            Create an Amazon Detailed Page content for the product below, using the following structured format:
+        Create an Amazon Detailed Page content for the product below, using the following structured format:
 
-            |||Title: [Detailed SEO-Optimized Product Title Goes Here]|||
-            |||Description: [Comprehensive Product Description]|||
-            |||Bullets: [Bullet1 =|= Bullet2 =|= Bullet3 =|= Bullet4 =|= Bullet5]|||
+        |||Title: [Detailed SEO-Optimized Product Title Goes Here]|||
+        |||Description: [Comprehensive Product Description]|||
+        |||Bullets: [Bullet1 =|= Bullet2 =|= Bullet3 =|= Bullet4 =|= Bullet5]|||
 
-            Product Details:
-            Product Name: {descriptions[i]}
-            Brand: {brand_names[i]}
-            Category: {categories[i]}
-            Sub-Category: {sub_categories[i]}
-            Model Number: {model_numbers[i]}
-            Color: {colors[i]}
-            Material: {materials[i]}
-            Size: {sizes[i]}
-            Key Features:
-            1. {key_attributes[0] if len(key_attributes) > 0 else 'No details'}
-            2. {key_attributes[1] if len(key_attributes) > 1 else 'No details'}
-            3. {key_attributes[2] if len(key_attributes) > 2 else 'No details'}
-            4. {key_attributes[3] if len(key_attributes) > 3 else 'No details'}
-            5. {key_attributes[4] if len(key_attributes) > 4 else 'No details'}
+        Product Details:
+        Product Name: {descriptions[i]}
+        Brand: {brand_names[i]}
+        Category: {categories[i]}
+        Sub-Category: {sub_categories[i]}
+        Model Number: {model_numbers[i]}
+        Color: {colors[i]}
+        Material: {materials[i]}
+        Size: {sizes[i]}
+        Key Features:
+        1. {key_attributes[0] if len(key_attributes) > 0 else 'No details'}
+        2. {key_attributes[1] if len(key_attributes) > 1 else 'No details'}
+        3. {key_attributes[2] if len(key_attributes) > 2 else 'No details'}
+        4. {key_attributes[3] if len(key_attributes) > 3 else 'No details'}
+        5. {key_attributes[4] if len(key_attributes) > 4 else 'No details'}
 
-            Keywords: {keywords[i]}
+        Keywords: {keywords[i]}
 
-            Create a compelling, SEO-optimized product listing that highlights unique features and benefits.
-            '''
-
+        Create a compelling, SEO-optimized product listing that highlights unique features and benefits.
+        '''
+                    
             # Make Claude API call
             try:
                 message = client.messages.create(
@@ -358,16 +359,43 @@ def submit_products(form_data=None):
         responses_filepath = os.path.join(UPLOAD_FOLDER, responses_filename)
         with open(responses_filepath, 'w') as f:
             json.dump(claude_responses, f, indent=4)
+        
+        with current_app.app_context():
+           from main_app.app import ProductSubmission
+           submission = ProductSubmission(user_id = current_user.id, product_data=products, claude_response=claude_responses)
+           db.session.add(submission)
+           db.session.commit()
 
         # Render results page with Claude API responses and filenames
         return render_template('content_generator/results.html', 
-                           responses=claude_responses, 
-                           products_filename=products_filename,
-                           responses_filename=responses_filename, 
-                           user=current_user)
+                                responses=claude_responses, 
+                                products_filename=products_filename,
+                                responses_filename=responses_filename, 
+                                user=current_user)
 
     except Exception as e:
         return jsonify({
             "status": "error", 
             "message": str(e)
         }), 500
+@content_bp.route('/history')
+@login_required
+def history():
+  return render_template('content_generator/history.html', user=current_user)
+
+@content_bp.route('/history/inputs')
+@login_required
+def history_inputs():
+    with current_app.app_context():
+           from main_app.app import ProductSubmission
+           submissions = db.session.query(ProductSubmission).filter_by(user_id=current_user.id).all()
+
+           return render_template('content_generator/history_inputs.html', user=current_user, submissions=submissions)
+
+@content_bp.route('/history/outputs')
+@login_required
+def history_outputs():
+    with current_app.app_context():
+        from main_app.app import ProductSubmission
+        submissions = db.session.query(ProductSubmission).filter_by(user_id=current_user.id).all()
+        return render_template('content_generator/history_outputs.html', user=current_user, submissions=submissions)

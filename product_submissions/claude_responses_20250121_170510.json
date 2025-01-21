@@ -1,0 +1,36 @@
+[
+    {
+        "product": {
+            "brand_name": "Arthaa",
+            "category": "Office Notebooks",
+            "sub_category": "Unruled Notebook",
+            "description": "Arthaa A5 Laser engraved designer MDF cover with 100 unruled 90GSM Bond Pages, spiral bound",
+            "ean_number": "NA",
+            "model_number": "MDF-BK-DIW-A5-1",
+            "color": "Black",
+            "material": "MDF",
+            "size": "A5",
+            "keywords": [
+                "Spiral Notebook Unruled Notebook Wood Cover MDF Cover Notebook for office Notebook for Journal Office Notebook"
+            ],
+            "key_attributes": [
+                "Laser Engraved MDF Cover - Designer",
+                "100 Pages of Unruled 90 GSM Bond Paper",
+                "Fully openable for ease of writing",
+                "High quality materials and durable",
+                "Limited Designer Editions"
+            ]
+        },
+        "claude_output": {
+            "title": "Arthaa A5 Designer Notebook with Laser Engraved MDF Cover, 100 Pages Unruled 90GSM Bond Paper, Spiral Bound Premium Journal for Office & Personal Use (Black)",
+            "description": "Experience the perfect blend of elegance and functionality with the Arthaa A5 Designer Notebook. This premium journal features a stunning laser-engraved MDF (Medium Density Fiberboard) cover that adds a touch of sophistication to your daily writing experience. The intricate designer patterns are carefully etched onto the durable black MDF cover, making each notebook a unique piece of art.\n\nCrafted with premium 90 GSM bond paper, this notebook ensures smooth writing with no bleeding or feathering. The 100 unruled pages provide complete freedom for your creative expressions, whether it's sketching, journaling, or note-taking. The professional spiral binding allows the notebook to lay completely flat at 180 degrees, offering comfortable writing from any angle.\n\nThis limited designer edition notebook is perfect for professionals, students, artists, and anyone who appreciates quality stationery. The A5 size (148 x 210 mm) makes it ideal for carrying in bags while providing ample writing space. Make a statement in your next meeting or journaling session with this sophisticated Arthaa notebook.",
+            "bullets": [
+                "Premium Laser Engraved MDF Cover: Featuring unique designer patterns carefully etched on durable black MDF, making each notebook a sophisticated accessory for your desk",
+                "High-Quality Paper: 100 pages of premium 90 GSM unruled bond paper ensuring smooth writing experience with no bleeding or ghosting",
+                "180\u00b0 Lay-Flat Design: Professional spiral binding allows the notebook to open completely flat for comfortable writing and sketching from any angle",
+                "Perfect Size & Versatility: A5 size (148 x 210 mm) ideal for portability while offering adequate writing space; Perfect for office notes, journaling, sketching, and creative writing",
+                "Limited Designer Edition: Each notebook is part of an exclusive collection, making it a unique possession for those who appreciate premium stationery; Ideal for gifting to colleagues and loved ones"
+            ]
+        }
+    }
+]
