@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcomBuddha Internal Tool - Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             padding-top: 70px;
-            background: linear-gradient(to right, #f2f2f2, #e0e0e0);
+           background: linear-gradient(to right, #f2f2f2, #e0e0e0);
             font-family: 'Arial', sans-serif;
              color: #333;
 
         }
-
         .jumbotron {
             margin-top: 20px;
             background-color: #ffffff;
              padding: 40px;
              border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            color: #2c3e50; /* Match Brand */
-
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            color: #2c3e50;
         }
-
         .jumbotron h1 {
             font-size: 2.8rem;
              margin-bottom: 15px;
          }
         .jumbotron p {
             font-size: 1.2rem;
-           color: #555; /* Adjusting paragraph color */
+           color: #555;
            line-height: 1.6;
         }
         .navbar {
@@ -40,19 +37,16 @@
              color: #fff;
          }
          .navbar-brand {
-           color: #fff;
-           font-weight: bold;
-            font-size: 1.6rem; /* Better spacing */
-
-        }
+              color: #fff;
+             font-weight: bold;
+             font-size: 1.6rem;
+          }
          .nav-link {
             color: #fff;
-        }
-
-        .nav-link:hover {
-            color: #bdc3c7; /* A lighter text when hovered */
          }
-
+        .nav-link:hover {
+            color: #bdc3c7;
+         }
           .card {
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
@@ -61,39 +55,39 @@
         }
 
         .card:hover {
-            transform: translateY(-8px); /* Increased lift */
+            transform: translateY(-8px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.20);
         }
 
           .card-body {
-            padding: 30px; /* more internal padding*/
+            padding: 30px;
           }
          .card-title {
             font-size: 1.8rem;
-            color: #2c3e50; /* Match Brand */
-             margin-bottom: 20px; /* More spacing from card text */
+            color: #2c3e50;
+             margin-bottom: 20px;
            font-weight: 600;
 
         }
          .card-text {
             font-size: 1.1rem;
-            color: #666; /* A better grey */
-             margin-bottom: 20px;
+            color: #666;
+            margin-bottom: 20px;
             line-height: 1.6;
 
         }
         .btn-primary {
-          background-color: #2c3e50; /* Match Brand */
-            border-color: #2c3e50; /* Match Brand */
-            padding: 12px 20px; /* Improved spacing */
-            font-weight: 600;
-           border-radius: 6px;
-             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-           transition: background-color 0.3s ease-in-out;
+            background-color: #2c3e50;
+            border-color: #2c3e50;
+            padding: 12px 20px;
+             font-weight: 600;
+            border-radius: 6px;
+              box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s ease-in-out;
 
        }
         .btn-primary:hover {
-            background-color: #1a2530; /* Darkened hover */
+            background-color: #1a2530;
           border-color: #1a2530;
         }
     </style>
@@ -104,18 +98,24 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-               <li class="nav-item">
-                   <span class="navbar-text">
-                      Welcome, User
-                   </span>
-               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
-            </li>
-            </ul>
-        </div>
+         <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav ml-auto">
+                 <li class="nav-item">
+                      <a class="nav-link" href="/previous_listings">Previous Listings</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="/change_password">Change Password</a>
+                 </li>
+                 <li class="nav-item">
+                     <span class="navbar-text">
+                       Welcome, {{ user.username }}
+                     </span>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="/logout">Logout</a>
+                 </li>
+             </ul>
+         </div>
     </nav>
 
     <div class="container">
@@ -130,7 +130,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Create Content for a Listing</h5>
                         <p class="card-text">Generate listing content based on your input.</p>
-                        <a href="/create_content" class="btn btn-primary btn-block">Go to Content Creation</a>
+                        <a href="/create_content" class="btn btn-primary btn-block">Go to Content Generator</a>
                     </div>
                 </div>
              </div>
@@ -139,7 +139,7 @@
                   <div class="card-body">
                         <h5 class="card-title">Create Infographics for a Listing</h5>
                        <p class="card-text">Generate infographics based on your Listing Content.</p>
-                        <a href="/create_infographics" class="btn btn-primary btn-block">Go to Infographics Creation</a>
+                        <a href="/create_infographics" class="btn btn-primary btn-block">Go to Infographics Generator</a>
                   </div>
                </div>
            </div>
@@ -148,13 +148,12 @@
                   <div class="card-body">
                      <h5 class="card-title">Create Full Listing</h5>
                      <p class="card-text">Generate the content and the infographics together.</p>
-                     <a href="/create_all" class="btn btn-primary btn-block">Go to Combined Creation</a>
+                     <a href="/create_all" class="btn btn-primary btn-block">Go to Listings Generator</a>
                   </div>
               </div>
            </div>
         </div>
     </div>
-
      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
