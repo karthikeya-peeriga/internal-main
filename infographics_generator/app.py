@@ -1,5 +1,6 @@
 import os
 import json
+import csv
 from datetime import datetime
 from io import StringIO
 from flask import Flask, request, jsonify, render_template, send_file, Response, Blueprint, current_app
@@ -8,6 +9,8 @@ import anthropic
 import pandas as pd
 from extensions import db
 from werkzeug.utils import secure_filename
+from PIL import Image
+import base64
 
 infographic_bp = Blueprint('infographics_generator', __name__, template_folder='templates/infographics_generator')
 UPLOAD_FOLDER = 'product_submissions'
@@ -15,8 +18,40 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Initialize Anthropic client
 client = anthropic.Anthropic(
-    api_key="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"  # Use environment variable
+    api_key="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"
 )
+
+def generate_layout_prompt(product_type, title, features, image_filename):
+    return f"""
+    Create 3 different SVG layout designs for a product infographic. Each layout should:
+    - Be 2000x2000 pixels
+    - Include a placeholder for the product image '{image_filename}'
+    - Display the title: "{title}"
+    - Showcase these 3 key features with their emojis:
+    {features[:3]}
+    
+    Product type: {product_type}
+    
+    Each layout should be creative and appropriate for this type of product. Include gradients, modern design elements, and ensure the product image is prominent.
+    Make each layout distinctly different in terms of composition.
+    
+    For each layout:
+    1. Use a different background style/gradient
+    2. Position the product image differently
+    3. Arrange the features in a unique way
+    4. Use different decorative elements
+    
+    Return only the SVG code for all 3 layouts, separated by '---LAYOUT---'.
+    Each SVG should have {{product_image_path}} as a placeholder for the image path.
+    Make sure each SVG has a proper viewBox="0 0 2000 2000" attribute.
+    
+    Ensure the SVG layouts have:
+    1. Modern gradient backgrounds
+    2. Subtle shadows and depth
+    3. Clear typography for features
+    4. Proper scaling and positioning
+    5. Clean, professional look
+    """
 
 @infographic_bp.route('/', methods=['GET', 'POST'])
 @login_required
@@ -32,10 +67,16 @@ def index():
         
         if product_image and product_image.filename != '':
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            image_path = os.path.join(UPLOAD_FOLDER, f'img_{timestamp}_{secure_filename(product_image.filename)}')
+            image_filename = f'img_{timestamp}_{secure_filename(product_image.filename)}'
+            image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             product_image.save(image_path)
+            
+            # Open and process the image to get dimensions
+            with Image.open(image_path) as img:
+                width, height = img.size
+                aspect_ratio = width / height
         else:
-            image_path = None
+            return "No image uploaded", 400
 
         if input_type == "content_fields":
             brand_name = request.form.get('brand_name')
@@ -48,27 +89,15 @@ def index():
             material = request.form.get('material')
             size = request.form.get('size')
             keywords = request.form.get('keywords')
-            key_attribute_1 = request.form.get('key_attribute_1')
-            key_attribute_2 = request.form.get('key_attribute_2')
-            key_attribute_3 = request.form.get('key_attribute_3')
-            key_attribute_4 = request.form.get('key_attribute_4')
-            key_attribute_5 = request.form.get('key_attribute_5')
+            key_attributes = [
+                request.form.get('key_attribute_1'),
+                request.form.get('key_attribute_2'),
+                request.form.get('key_attribute_3'),
+                request.form.get('key_attribute_4'),
+                request.form.get('key_attribute_5')
+            ]
+            title = f"{brand_name} - {category}"
             
-            key_attributes = [key_attribute_1, key_attribute_2, key_attribute_3, key_attribute_4, key_attribute_5]
-
-            product_data = {
-                "brand_name": brand_name,
-                "category": category,
-                "sub_category": sub_category,
-                "description": description,
-                "ean_number": ean_number,
-                "model_number": model_number,
-                "color": color,
-                "material": material,
-                "size": size,
-                "keywords": keywords,
-                "key_attributes": key_attributes
-            }
             message_content = f"""
                 Extract exactly 6 key selling points from the data below. Each point MUST be 5-8 words maximum. Make sure that the bullet points are on their own separate lines.
                 Brand: {brand_name}
@@ -81,17 +110,12 @@ def index():
                 Material: {material}
                 Size: {size}
                 Keywords: {keywords}
-                Key Attributes: {','.join(key_attributes)}
+                Key Attributes: {','.join(filter(None, key_attributes))}
             """
         elif input_type == "specific_fields":
             title = request.form.get('title')
             description = request.form.get('description')
             bullets = request.form.get('bullets')
-            product_data = {
-                "title": title,
-                "description": description,
-                "bullets": bullets
-            }
             message_content = f"""
                 Extract exactly 6 key selling points from the data below. Each point MUST be 5-8 words maximum. Make sure that the bullet points are on their own separate lines.
                 Title: {title}
@@ -99,7 +123,7 @@ def index():
                 Bullets: {bullets}
             """
         else:
-            return "No correct input type was passed"
+            return "No correct input type was passed", 400
 
         use_emoji = request.form.get('use_emoji')
         if use_emoji:
@@ -109,57 +133,71 @@ def index():
             """
 
         try:
-            message = client.messages.create(
+            # First message to get features
+            features_message = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
                 max_tokens=1000,
                 temperature=0,
-                system=(
-                    "You are an expert Amazon and Ecommerce product listing copy writer and content generator. "
-                    "Your objective is to ensure better shopping experiences by providing accurate, "
-                    "tailor-made details for each product type, increasing conversion rates, and boosting organic visibility using SEO. "
-                    "Your task is to identify and articulate the most compelling features in 5-8 words maximum. "
-                    "Each point should be direct, specific, and focused on a single clear benefit. "
-                    "Avoid unnecessary words and ensure each point is immediately understandable."
-                ),
-                messages=[
-                    {
-                        "role": "user",
-                        "content": message_content
-                    }
-                ]
+                system="You are an expert product copywriter. Extract the most compelling features and express them concisely.",
+                messages=[{"role": "user", "content": message_content}]
             )
             
-            response_text = str(message.content[0].text)
-            # Extract sections
-            sections = response_text.split("\n")
-            key_features = []
-
-            for section in sections:
-                section = section.strip()
-                if section and len(section.split()) <= 8 and len(key_features) < 6:
-                    key_features.append(section)
-
-            if len(key_features) > 6:
-                key_features = key_features[:6]
+            features = features_message.content[0].text.strip().split('\n')
+            features = [f.strip() for f in features if f.strip()][:3]  # Get first 3 features
             
+            # Second message to generate layouts
+            layouts_message = client.messages.create(
+                model="claude-3-5-sonnet-20241022",
+                max_tokens=4000,
+                temperature=0.7,
+                system="You are an expert SVG designer specializing in product infographics.",
+                messages=[{
+                    "role": "user", 
+                    "content": generate_layout_prompt(category if input_type == "content_fields" else title,
+                                                    title,
+                                                    features,
+                                                    image_filename)
+                }]
+            )
+            
+            # Split the layouts
+            svg_layouts = layouts_message.content[0].text.strip().split('---LAYOUT---')
+            svg_layouts = [layout.strip() for layout in svg_layouts if layout.strip()]
+            
+            # Replace the placeholder with actual image path
+            svg_layouts = [layout.replace('{product_image_path}', f'/{UPLOAD_FOLDER}/{image_filename}') 
+                         for layout in svg_layouts]
+            
+            # Save submission to database
             with current_app.app_context():
                 from main_app.app import InfographicSubmission, db
                 submission = InfographicSubmission(
                     user_id=current_user.id,
                     product_image=image_path,
                     input_type=input_type,
-                    product_data=product_data,
-                    claude_response=key_features
+                    product_data={
+                        'title': title,
+                        'image_aspect_ratio': aspect_ratio,
+                        'features': features,
+                        'layouts': svg_layouts
+                    },
+                    claude_response=features
                 )
                 db.session.add(submission)
                 db.session.commit()
-            return render_template('infographics_generator/results.html', user=current_user, key_features=key_features)
+            
+            return render_template('infographics_generator/results.html', 
+                                user=current_user,
+                                key_features=features,
+                                layouts=svg_layouts,
+                                image_path=f'/{UPLOAD_FOLDER}/{image_filename}')
 
         except Exception as api_error:
             return jsonify({
                 "status": "error",
                 "message": str(api_error)
             }), 500
+
     return render_template('infographics_generator/infographic_generator.html', user=current_user)
 
 @infographic_bp.route('/download_input_template')
